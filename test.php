@@ -1,6 +1,7 @@
 <?php
 require 'path.php';
 
+echo '<!DOCTYPE html>';
 $path = [
 	'html',//TODO: add manifest="manifest.mf" + make file
 	[
@@ -11,7 +12,7 @@ $path = [
 			'content' => "text/html",
 			'charset' => "utf-8"
 		],
-		['title', 'CSD'],
+		['title', 'PATH'],
 		[
 			'link#favicon',
 			'href' => 'favicon.ico',
@@ -21,7 +22,8 @@ $path = [
 		//TODO: add meta tags for bookmarks and/or for search engines
 	],
 	[
-		'body#body'
+		'body#body',
+		['#myid']
 	]
 ];
 
