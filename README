@@ -1,0 +1,3 @@
+PATH is (P)HP (A)rrays (T)o (H)TML, which allows you to express HTML code as arrays written in a JSON-like shorthand, and converts these arrays into compressed HTML. By storing HTML as arrays, it is easier to manipulate and search through it server-side, and it can be written less redundantly. Moreover, the path compiler can automatically determine things like self-closing tags. For example:
+
+<label id="myId" style="background:#000">this is my content</label> can be written as ['label#myId','style'=>'background:#000', 'this is my content']
