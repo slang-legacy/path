@@ -17,6 +17,7 @@ function getIdAndClasses($array){
 		$array['class'] .= ' ' . $classes[$i][1];
 	}
 	$array['class'] = trim($array['class']);
+	if(empty($array['class'])) unset($array['class']);
 
 	$array[0] = $tagName[0];//normalize
 
