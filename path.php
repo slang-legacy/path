@@ -64,6 +64,10 @@ function path($array){
 		$innerHTML = '';
 
 		while(array_key_exists($key, $array)){
+			if(is_callable($array[$key])){//process anonymous functions
+				$array[$key] = call_user_func($array[$key]);
+			}
+
 			if(is_array($array[$key])){//recursively call path to process nested tags
 				if($pathOptions['indent']) $containsNestedTags = true;//used for end tag
 				if($pathOptions['extraSpace'] && !$pathOptions['indent']){//indent must be false, otherwise the extra space would be useless
