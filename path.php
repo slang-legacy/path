@@ -1,7 +1,7 @@
 <?php //PATH is (P)HP (A)rrays (T)o (H)TML
 
 //TODO: add in import tag (gets & adds file in place of tag)
-//TODO: switch from php array syntax
+//TODO: switch from php array syntax???
 //TODO: fix issue with spaces between tags
 //TODO: get selector library like sizzle for php
 
@@ -12,7 +12,7 @@ $pathOptions =[
 	'showErrors' => true
 ];
 
-function getIdAndClasses($array){
+function getIdAndClasses(&$array){
 	preg_match('/[^.#\n\s]*/', $array[0], $tagName);//get only element name
 	
 	//get id
@@ -36,8 +36,6 @@ function getIdAndClasses($array){
 	if(empty($array['class'])) unset($array['class']);
 
 	$array[0] = empty($tagName[0]) ? 'div' : $tagName[0];//normalize and provide div default
-
-	return $array;
 }
 
 $currentIndentation;//TODO: put currentIndentation into a class or something to prevent it from being global
@@ -46,7 +44,7 @@ function path($array){
 	global $pathOptions;
 	global $currentIndentation;
 
-	$array = getIdAndClasses($array);
+	getIdAndClasses($array);
 
 	$tagName = $array[0];
 	unset($array[0]);
