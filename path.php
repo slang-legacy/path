@@ -89,7 +89,7 @@ function path($array){
 	$currentIndentation = substr($currentIndentation,0,-1);
 
 	if(!$isSelfClosing){
-		if($containsNestedTags){
+		if(isset($containsNestedTags) && $containsNestedTags){//isset prevents nasty undefined notice
 			$return .= '>' . $innerHTML . "\n" . $currentIndentation . '</' . $tagName . '>';//add stuff for regular tags
 		} else {
 			$return .= '>' . $innerHTML . '</' . $tagName . '>';//add stuff for regular tags
