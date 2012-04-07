@@ -59,6 +59,7 @@ function path($array){
 
 		while(array_key_exists($key, $array)){
 			if(is_array($array[$key])){//recursivly call path to process nested tags
+				if($pathOptions['indent']) $containsNestedTags = true;//used for end tag
 				if($pathOptions['extraSpace'] && !$pathOptions['indent']){//indent must be false, otherwise the extra space would be useless
 					$innerHTML .= ' ' . path($array[$key]) . ' ';
 				} else {
@@ -79,13 +80,39 @@ function path($array){
 		$return .= ' ' . $key . '="' . $value . '"';
 	}
 
+	$currentIndentation = substr($currentIndentation,0,-1);
+
 	if(!$isSelfClosing){
-		$return .= '>' . $innerHTML . '</' . $tagName . '>';//add stuff for regular tags
+		if($containsNestedTags){
+			$return .= '>' . $innerHTML . "\n" . $currentIndentation . '</' . $tagName . '>';//add stuff for regular tags
+		} else {
+			$return .= '>' . $innerHTML . '</' . $tagName . '>';//add stuff for regular tags
+		}
 	} else {
 		$return .= '/>';//add stuff for self closing tags
 	}
 
-	$currentIndentation = substr($currentIndentation,0,-1);
 	return $return;
 }
+/*
+$fish = [
+	'turtle' => [1,2,3],
+	'buffalo' => [4,5,6]
+];
+
+$arrayGetter = 0;
+
+function getStuff(){
+	global $fish;
+
+	//find stuff
+
+	$GLOBALS['arrayGetter'] =& $fish['turtle'][0];
+	return 'arrayGetter';
+}
+
+${getStuff()} = 300;
+
+var_dump($fish);
+*/
 ?>
