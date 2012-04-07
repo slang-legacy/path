@@ -15,15 +15,23 @@ $pathOptions =[
 function getIdAndClasses($array){
 	preg_match('/[^.#\n\s]*/', $array[0], $tagName);//get only element name
 	
+	//get id
 	preg_match('/#([^.\n\s]*)/', $array[0], $id);//get only id name
 	if(count($id) != 0 && empty($array['id'])) $array['id'] = $id[1];//this will ignore the shorthand if a id is defined normally
 	
-	preg_match_all('/\.([^.\n\s]*)/', $array[0], $classes);//get class names
+	//get classes
+	preg_match_all('/\.([^.\n\s]*)/', $array[0], $classes);
 
-	$len = count($classes);
-	for($i=0; $i < $len; $i++){ 
-		$array['class'] .= ' ' . $classes[$i][1];
+	if(empty($array['class'])) $array['class'] = '';//make sure class is defined... will unset later if not classes
+
+	if(!empty($classes[1])){
+		$classes = $classes[1];
+		$len = count($classes);
+		for($i=0; $i < $len; $i++){
+			$array['class'] .= ' ' . $classes[$i];
+		}
 	}
+
 	$array['class'] = trim($array['class']);
 	if(empty($array['class'])) unset($array['class']);
 
@@ -32,7 +40,7 @@ function getIdAndClasses($array){
 	return $array;
 }
 
-global $currentIndentation;//TODO: put currentIndentation into a class or something
+$currentIndentation;//TODO: put currentIndentation into a class or something to prevent it from being global
 
 function path($array){
 	global $pathOptions;
