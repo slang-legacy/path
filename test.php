@@ -23,7 +23,8 @@ $path = [
 	],
 	[
 		'body#body',
-		['#myid']
+		['#myId'],
+		['#myId.myClass',5+4+3]
 	]
 ];
 
