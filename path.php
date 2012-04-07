@@ -65,21 +65,26 @@ function path($array){
 
 		while(array_key_exists($key, $array)){
 			if(is_callable($array[$key])){//process anonymous functions
-				$array[$key] = call_user_func($array[$key]);
-			}
-
-			if(is_array($array[$key])){//recursively call path to process nested tags
-				if($pathOptions['indent']) $containsNestedTags = true;//used for end tag
-				if($pathOptions['extraSpace'] && !$pathOptions['indent']){//indent must be false, otherwise the extra space would be useless
-					$innerHTML .= ' ' . path($array[$key]) . ' ';
-				} else {
-					$innerHTML .= path($array[$key]);
-				}
+				$newValues = call_user_func($array[$key]);
+				unset($array[$key]);
+				$array = array_merge($array, $newValues);
+				//die();
+				$key = 0;//key gets reset
 			} else {
-				$innerHTML .= $array[$key];
+				if(is_array($array[$key])){//recursively call path to process nested tags
+					if($pathOptions['indent']) $containsNestedTags = true;//used for end tag
+					if($pathOptions['extraSpace'] && !$pathOptions['indent']){//indent must be false, otherwise the extra space would be useless
+						$innerHTML .= ' ' . path($array[$key]) . ' ';
+					} else {
+						$innerHTML .= path($array[$key]);
+					}
+				} else {
+					$innerHTML .= $array[$key];
+				}
+
+				unset($array[$key]);
+				$key++;
 			}
-			unset($array[$key]);
-			$key++;
 		}
 	}
 
