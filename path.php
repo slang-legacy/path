@@ -14,6 +14,11 @@ $pathOptions =[
 ];
 
 function getIdAndClasses(&$array){
+	if(!is_string($array[0])){
+		echo 'error: tag name is not string';
+		return;
+	}
+
 	preg_match('/[^.#\n\s]*/', $array[0], $tagName);//get only element name
 	
 	//get id
@@ -40,6 +45,10 @@ function getIdAndClasses(&$array){
 }
 
 $currentIndentation;//TODO: put currentIndentation into a class or something to prevent it from being global
+
+function pathNormalize(&$array){
+	getIdAndClasses($array);
+}
 
 function pathCompile($array){
 	global $pathOptions;
@@ -93,9 +102,17 @@ function pathCompile($array){
 
 	//process attributes - processed last because above code removes numeric keys from array (not attributes)
 	foreach($array as $key => $value){
-		//encode any double quotes from string (these can't be in attributes)...this is important for attributes which contain script
-		$value = preg_replace('/\"/', '&quot;', $value);
-		$return .= ' ' . $key . '="' . $value . '"';
+		if(is_nan($key)){//in case of leftover numeric keys (like if self closing tag was given content)
+			if(is_string($value)){
+				//encode any double quotes from string (these can't be in attributes)...this is important for attributes which contain script
+				$value = preg_replace('/\"/', '&quot;', $value);
+				$return .= ' ' . $key . '="' . $value . '"';
+			} else {
+				echo 'error: attribute is not string';
+			}
+		} else {
+			echo 'error: self closing tag may have content';//TODO: add tag name n' other stuff to error logging
+		}
 	}
 
 	$currentIndentation = substr($currentIndentation,0,-1);
@@ -112,6 +129,7 @@ function pathCompile($array){
 
 	return $return;
 }
+
 /*
 $fish = [
 	'turtle' => [1,2,3],
