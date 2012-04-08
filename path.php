@@ -56,18 +56,19 @@ function getIdAndClasses(&$array){//currently only called by path normalize (doe
 
 function pathNormalize(&$array){
 	getIdAndClasses($array);
-	$newArray[0] = $array[0];
-	unset($array[0]);
+	//$tagName = $array[0];//add back at end of 
+	//unset($array[0]);
 
-	reset($array);//need to eval once before loop start
+	end($array);//need to eval once before loop start
 	$each = each($array);
 
 	while($each !== false){
 		$key = $each['key'];//shorter
 
 		if(is_callable($array[$key]) && gettype($array[$key]) == "object"){//process anonymous functions
-			$array = array_merge($array, call_user_func($array[$key]));//TODO: fix
-			unset($array[$key]);
+			$newValues = call_user_func($array[$key]);
+			unset($array[$key]);//must remove function before merging, or could unset wrong thing due to change in keys during merge????
+			$array = array_merge($array, $newValues);
 		} else {
 			//recursively call path to process nested tags
 			if(is_array($array[$key])) pathNormalize($array[$key]);
@@ -77,11 +78,11 @@ function pathNormalize(&$array){
 			unset($array[$key]);
 		}
 
+		end($array);
 		$each = each($array);
-		reset($array);
 	}
 
-	$array = $newArray;
+	$array = array_reverse($newArray);
 }
 
 function pathCompile($array){

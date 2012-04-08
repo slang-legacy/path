@@ -20,7 +20,25 @@ $pathArray =
 		],
 	],
 	['body#body',
-		['#myId'],
+		function(){
+			$array = ['i\'m','too','sexy','for','my','shirt'];
+			$newStuff;
+			foreach($array as $value){
+				$newStuff[] = ['p', $value];
+			}
+			return $newStuff;
+		},
+		'data-hot' => true,
+		['#myId',
+			function(){
+				$array = ['i\'m','too','sexy','for','my','shirt'];
+				$newStuff;
+				foreach($array as $value){
+					$newStuff[] = ['p', $value];
+				}
+				return $newStuff;
+			}
+		],
 		['#myId.myClass',5+4+3],
 		function(){
 			$array = ['i\'m','too','sexy','for','my','shirt'];
@@ -29,7 +47,8 @@ $pathArray =
 				$newStuff[] = ['p', $value];
 			}
 			return $newStuff;
-		}
+		},
+		['#myId.myClass',5+4+3]
 	]
 ];
 
