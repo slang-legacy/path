@@ -5,7 +5,7 @@
 //TODO: fix issue with spaces between tags
 //TODO: get selector library like sizzle for php
 
-$pathOptions =[
+$pathOptions = [
 	'selfClosingTags' => ['img', 'br', 'input', 'meta', 'link'],
 	'extraSpace' => true,//if you want path to add extra space between tags (for browser compatibility)
 	'indent' => true,
@@ -13,7 +13,17 @@ $pathOptions =[
 	'manualNormalize' => false //increase performance by only running normalize functions when needed
 ];
 
-function getIdAndClasses(&$array){
+function path(&$array){//wrapper function
+	global $pathOptions;
+	
+	if(!$pathOptions['manualNormalize']) pathNormalize($array);
+	//var_dump($array);
+
+	$currentIndentation;
+	return pathCompile($array);
+}
+
+function getIdAndClasses(&$array){//currently only called by path normalize (doesn't need to be seperate function)
 	if(!is_string($array[0])){
 		echo 'error: tag name is not string';
 		return;
@@ -44,19 +54,39 @@ function getIdAndClasses(&$array){
 	$array[0] = empty($tagName[0]) ? 'div' : $tagName[0];//normalize and provide div default
 }
 
-$currentIndentation;//TODO: put currentIndentation into a class or something to prevent it from being global
-
 function pathNormalize(&$array){
 	getIdAndClasses($array);
+	$newArray[0] = $array[0];
+	unset($array[0]);
+
+	reset($array);//need to eval once before loop start
+	$each = each($array);
+
+	while($each !== false){
+		$key = $each['key'];//shorter
+
+		if(is_callable($array[$key]) && gettype($array[$key]) == "object"){//process anonymous functions
+			$array = array_merge($array, call_user_func($array[$key]));//TODO: fix
+			unset($array[$key]);
+		} else {
+			//recursively call path to process nested tags
+			if(is_array($array[$key])) pathNormalize($array[$key]);
+
+			//will overwrite non-numberic keys (if declared twice), and append numberic ones - needed due to function returning values
+			is_numeric($key) ? $newArray[] = $array[$key] : $newArray[$key] = $array[$key];
+			unset($array[$key]);
+		}
+
+		$each = each($array);
+		reset($array);
+	}
+
+	$array = $newArray;
 }
 
 function pathCompile($array){
 	global $pathOptions;
 	global $currentIndentation;
-
-	if(!$pathOptions['manualNormalize']){
-		getIdAndClasses($array);
-	}
 
 	$tagName = $array[0];
 	unset($array[0]);
@@ -76,42 +106,36 @@ function pathCompile($array){
 		$innerHTML = '';
 
 		while(array_key_exists($key, $array)){
-			if(is_callable($array[$key])){//process anonymous functions
-				$newValues = call_user_func($array[$key]);
-				unset($array[$key]);
-				$array = array_merge($array, $newValues);
-				//die();
-				$key = 0;//key gets reset
-			} else {
-				if(is_array($array[$key])){//recursively call path to process nested tags
-					if($pathOptions['indent']) $containsNestedTags = true;//used for end tag
-					if($pathOptions['extraSpace'] && !$pathOptions['indent']){//indent must be false, otherwise the extra space would be useless
-						$innerHTML .= ' ' . pathCompile($array[$key]) . ' ';
-					} else {
-						$innerHTML .= pathCompile($array[$key]);
-					}
+			if(is_array($array[$key])){//recursively call path to process nested tags
+				if($pathOptions['indent']) $containsNestedTags = true;//used for end tag
+				if($pathOptions['extraSpace'] && !$pathOptions['indent']){//indent must be false, otherwise the extra space would be useless
+					$innerHTML .= ' ' . pathCompile($array[$key]) . ' ';
 				} else {
-					$innerHTML .= $array[$key];
+					$innerHTML .= pathCompile($array[$key]);
 				}
-
-				unset($array[$key]);
-				$key++;
+			} else {
+				$innerHTML .= $array[$key];
 			}
+
+			unset($array[$key]);
+			$key++;
 		}
 	}
 
 	//process attributes - processed last because above code removes numeric keys from array (not attributes)
 	foreach($array as $key => $value){
-		if(is_nan($key)){//in case of leftover numeric keys (like if self closing tag was given content)
+		if(!is_numeric($key)){//in case of leftover numeric keys (like if self closing tag was given content)
 			if(is_string($value)){
 				//encode any double quotes from string (these can't be in attributes)...this is important for attributes which contain script
 				$value = preg_replace('/\"/', '&quot;', $value);
 				$return .= ' ' . $key . '="' . $value . '"';
 			} else {
 				echo 'error: attribute is not string';
+				return;
 			}
 		} else {
 			echo 'error: self closing tag may have content';//TODO: add tag name n' other stuff to error logging
+			return;
 		}
 	}
 
@@ -148,7 +172,5 @@ function getStuff(){
 }
 
 ${getStuff()} = 300;
-
-var_dump($fish);
 */
 ?>

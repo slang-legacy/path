@@ -7,3 +7,5 @@ PATH is (P)HP (A)rrays (T)o (H)TML, which allows you to express HTML code as arr
 For example:
 
 <label id="myId" style="background:#000">this is my content</label> can be written as ['label#myId','style'=>'background:#000', 'this is my content']
+
+PATH is not a new way to write HTML, it is a new way to write templates which is more closely intergrated with PHP. If you use PATH just for writing HTML, and you are not using functions to automate the writing of your pages, then you are wasting your time. 
