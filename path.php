@@ -9,7 +9,8 @@ $pathOptions =[
 	'selfClosingTags' => ['img', 'br', 'input', 'meta', 'link'],
 	'extraSpace' => true,//if you want path to add extra space between tags (for browser compatibility)
 	'indent' => true,
-	'showErrors' => true
+	'showErrors' => true,
+	'manualNormalize' => false //increase performance by only running normalize functions when needed
 ];
 
 function getIdAndClasses(&$array){
@@ -40,11 +41,13 @@ function getIdAndClasses(&$array){
 
 $currentIndentation;//TODO: put currentIndentation into a class or something to prevent it from being global
 
-function path($array){
+function pathCompile($array){
 	global $pathOptions;
 	global $currentIndentation;
 
-	getIdAndClasses($array);
+	if(!$pathOptions['manualNormalize']){
+		getIdAndClasses($array);
+	}
 
 	$tagName = $array[0];
 	unset($array[0]);
@@ -74,9 +77,9 @@ function path($array){
 				if(is_array($array[$key])){//recursively call path to process nested tags
 					if($pathOptions['indent']) $containsNestedTags = true;//used for end tag
 					if($pathOptions['extraSpace'] && !$pathOptions['indent']){//indent must be false, otherwise the extra space would be useless
-						$innerHTML .= ' ' . path($array[$key]) . ' ';
+						$innerHTML .= ' ' . pathCompile($array[$key]) . ' ';
 					} else {
-						$innerHTML .= path($array[$key]);
+						$innerHTML .= pathCompile($array[$key]);
 					}
 				} else {
 					$innerHTML .= $array[$key];
