@@ -1,11 +1,12 @@
 #PATH (pre-alpha)
-PATH is (P)HP (A)rrays (T)o (H)TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into compressed HTML.
+PATH is (P)HP (A)rrays (T)o (H)TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into regular HTML.
 
- - easier to manipulate and search through server-side
+ - easier to manipulate and search through than regular text
  - written less redundantly than HTML (no end tags)
  - automatically determine things like self-closing tags
  - language-agnostic: by exporting into JSON, you can write PATH in any language or even store PATH in a db like mongo
  - whitespace agnostic (format your PATH however you please)
+ - compiled HTML can be compressed (whitespace removed) or indented like regular HTML
 
 For example:
 
