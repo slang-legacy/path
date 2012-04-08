@@ -25,7 +25,7 @@ function path(&$array){//wrapper function
 
 function getIdAndClasses(&$array){//currently only called by path normalize (doesn't need to be seperate function)
 	if(!is_string($array[0])){
-		echo 'error: tag name is not string';
+		echo 'error: tag name is not string or attribute is array';
 		return;
 	}
 
@@ -125,14 +125,9 @@ function pathCompile($array){
 	//process attributes - processed last because above code removes numeric keys from array (not attributes)
 	foreach($array as $key => $value){
 		if(!is_numeric($key)){//in case of leftover numeric keys (like if self closing tag was given content)
-			if(is_string($value)){
-				//encode any double quotes from string (these can't be in attributes)...this is important for attributes which contain script
-				$value = preg_replace('/\"/', '&quot;', $value);
-				$return .= ' ' . $key . '="' . $value . '"';
-			} else {
-				echo 'error: attribute is not string';
-				return;
-			}
+			//encode any double quotes from string (these can't be in attributes)...this is important for attributes which contain script
+			$value = preg_replace('/\"/', '&quot;', $value);
+			$return .= ' ' . $key . '="' . $value . '"';
 		} else {
 			echo 'error: self closing tag may have content';//TODO: add tag name n' other stuff to error logging
 			return;
