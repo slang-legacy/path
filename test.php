@@ -2,8 +2,6 @@
 error_reporting( E_ALL );
 ini_set('display_errors', 1);
 
-require 'path.php';
-
 echo '<!DOCTYPE html>';
 $pathArray =
 ['html',//TODO: add manifest="manifest.mf" + make file
@@ -52,5 +50,8 @@ $pathArray =
 	]
 ];
 
+require 'path.php';
+${pathFind('', $pathArray)} = 300;
+//pathFind('', $pathArray);
 echo path($pathArray);
 ?>

@@ -17,6 +17,7 @@ function path(&$array){//wrapper function
 	global $pathOptions;
 	
 	if(!$pathOptions['manualNormalize']) pathNormalize($array);
+	pathNormalize($array);
 	//var_dump($array);
 
 	$currentIndentation;
@@ -62,7 +63,7 @@ function pathNormalize(&$array){
 	end($array);//need to eval once before loop start
 	$each = each($array);
 
-	while($each !== false){
+	while(count($array) > 0){
 		$key = $each['key'];//shorter
 
 		if(is_callable($array[$key]) && gettype($array[$key]) == "object"){//process anonymous functions
@@ -70,7 +71,6 @@ function pathNormalize(&$array){
 			unset($array[$key]);//must remove function before merging, or could unset wrong thing due to change in keys during merge????
 			if(is_array($newValues)){
 				$array = array_merge($array, $newValues);
-				fb($newValues);
 			} else {
 				pathError('function did not return array');
 			}
@@ -165,31 +165,15 @@ function pathErrorCheck(){
 }
 
 $referanceHoldingVar = '';
-function pathFind($query,$array){
+function pathFind($query, &$array){
+	global $pathOptions;
 
-
-	//find stuff
-
-	$GLOBALS['arrayGetter'] =& $array['turtle'][0];
-	return 'arrayGetter';
-}
-
-
-$fish = [
-	'turtle' => [1,2,3],
-	'buffalo' => [4,5,6]
-];
-
-$arrayGetter = 0;
-
-function getStuff($array){
+	if(!$pathOptions['manualNormalize']) pathNormalize($array);
 
 	//find stuff
 
-	$GLOBALS['arrayGetter'] =& $array['turtle'][0];
-	return 'arrayGetter';
-}
-
-${getStuff($fish)} = 300;
+	$GLOBALS['referanceHoldingVar'] =& $array[2][3][1];
+	return 'referanceHoldingVar';
+} 
 
 ?>
