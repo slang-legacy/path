@@ -25,7 +25,7 @@ function path(&$array){//wrapper function
 
 function getIdAndClasses(&$array){//currently only called by path normalize (doesn't need to be seperate function)
 	if(!is_string($array[0])){
-		echo 'error: tag name is not string or attribute is array';
+		pathError('tag name is not string or attribute is array');
 		return;
 	}
 
@@ -68,7 +68,12 @@ function pathNormalize(&$array){
 		if(is_callable($array[$key]) && gettype($array[$key]) == "object"){//process anonymous functions
 			$newValues = call_user_func($array[$key]);
 			unset($array[$key]);//must remove function before merging, or could unset wrong thing due to change in keys during merge????
-			$array = array_merge($array, $newValues);
+			if(is_array($newValues)){
+				$array = array_merge($array, $newValues);
+				fb($newValues);
+			} else {
+				pathError('function did not return array');
+			}
 		} else {
 			//recursively call path to process nested tags
 			if(is_array($array[$key])) pathNormalize($array[$key]);
@@ -130,7 +135,7 @@ function pathCompile($array){
 			$value = preg_replace('/\"/', '&quot;', $value);
 			$return .= ' ' . $key . '="' . $value . '"';
 		} else {
-			echo 'error: self closing tag may have content';//TODO: add tag name n' other stuff to error logging
+			pathError('self closing tag may have content');
 			return;
 		}
 	}
@@ -150,7 +155,26 @@ function pathCompile($array){
 	return $return;
 }
 
-/*
+function pathError($errorText){
+	//TODO: add tag name n' other stuff to error logging
+	echo 'error: ' . $errorText;
+}
+
+function pathErrorCheck(){
+	//TODO: check for duplicate ids
+}
+
+$referanceHoldingVar = '';
+function pathFind($query,$array){
+
+
+	//find stuff
+
+	$GLOBALS['arrayGetter'] =& $array['turtle'][0];
+	return 'arrayGetter';
+}
+
+
 $fish = [
 	'turtle' => [1,2,3],
 	'buffalo' => [4,5,6]
@@ -158,15 +182,14 @@ $fish = [
 
 $arrayGetter = 0;
 
-function getStuff(){
-	global $fish;
+function getStuff($array){
 
 	//find stuff
 
-	$GLOBALS['arrayGetter'] =& $fish['turtle'][0];
+	$GLOBALS['arrayGetter'] =& $array['turtle'][0];
 	return 'arrayGetter';
 }
 
-${getStuff()} = 300;
-*/
+${getStuff($fish)} = 300;
+
 ?>
