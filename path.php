@@ -174,36 +174,4 @@ class path {
 		return $array[2][3][1];
 	}
 }
-
-class Fruit {
-    private $color = "red";
- 
-    public function &getColorByRef() {
-        return $this->color;
-    }
- 
-    public function getColor() {
-        return $this->color;
-    }
- 
-    public function printColor() {
-        
-    }
-} 
- 
-echo "\nTEST RUN 1:\n\n";
-$fruit = new Fruit;
-$color = $fruit->getColor();
-echo "Fruit's color is $color\n"; 
-$color = "green"; // does nothing, but bear with me
-$color = $fruit->getColor();
-echo "Fruit's color is $color\n"; 
- 
-echo "\nTEST RUN 2:\n\n";
-$fruit = new Fruit;
-$color = &$fruit->getColorByRef();
-echo "Fruit's color is $color\n"; 
-$color = "green"; // now this changes the actual property of $fruit
-$color = $fruit->getColor();
-echo "Fruit's color is $color\n";
 ?>
