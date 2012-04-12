@@ -2,8 +2,12 @@
 error_reporting( E_ALL );
 ini_set('display_errors', 1);
 
+require 'path.php';
+$test = new path;
+
 echo '<!DOCTYPE html>';
-$pathArray =
+
+$test->path =
 ['html',//TODO: add manifest="manifest.mf" + make file
 	['head',
 		['meta',
@@ -49,9 +53,7 @@ $pathArray =
 		['#myId.myClass',5+4+3]
 	]
 ];
-
-require 'path.php';
-${pathFind('', $pathArray)} = 300;
-//pathFind('', $pathArray);
-echo path($pathArray);
+$value = &$test->find('#theht');
+$value = 200;
+echo $test->compile();
 ?>
