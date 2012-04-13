@@ -1,6 +1,6 @@
 #PATH (pre-alpha)
 ##Description
-PATH is (P)HP (A)rrays (T)o (H)TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into regular HTML.
+**PATH** is **P**HP **A**rrays **T**o **H**TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into regular HTML.
 
  - easier to manipulate and search through than regular text
  - written less redundantly than HTML (no end tags)
@@ -25,15 +25,16 @@ or
 
 ##Features
 ###Finished
- - id & class shorthands - rather than specifying an id or classes as attributes, they can be combined with the tag name in a format resembling a CSS selector
-	
- - default div tag - if no tag is specified, a div tag will be assumed
+ - **id & class shorthands** - rather than specifying an id or classes as attributes, they can be combined with the tag name in a format resembling a CSS selector
+ - **default div tag** - if no tag is specified, a div tag will be assumed
+ - **temporary ids** - if a id is prepended by a specified char, then the id will be removed in compiling (useful for ids which only need to be used server-side)
 
 ###Unfinished
- - server-side DOM manipulation and searching (still needs to be expanded)
+ - **server-side DOM manipulation and searching** (still needs to be expanded)
 
 ###Planned
- - id and class alias based minification - use normal aliases to refer to minified id or class names
+ - **id and class alias based minification** - use normal aliases to refer to minified id or class names
+ - **CSON Support** - ability to parse docs written in Coffee Script Object Notation (https://github.com/balupton/cson.npm)
 	
 
 
