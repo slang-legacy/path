@@ -33,7 +33,7 @@ $test->path =
 			return $newStuff;
 		},
 		'data-hot' => true,
-		['#myId',
+		['#:myTemporaryId',
 			function(){
 				$array = ['i\'m','too','sexy','for','my','shirt'];
 				$newStuff;
@@ -56,7 +56,7 @@ $test->path =
 	]
 ];
 
-$value = &$test->find('#myId');
+$value = &$test->find('#:myTemporaryId');
 $value[] = ['p','one last thing'];
 echo $test->compile();
 ?>

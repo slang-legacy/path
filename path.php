@@ -10,7 +10,8 @@ class path {
 		'extraSpace' => true,//if you want path to add extra space between tags (for browser compatibility)
 		'indent' => true,
 		'showErrors' => true,
-		'manualNormalize' => false //increase performance by only running normalize functions when needed
+		'manualNormalize' => false, //increase performance by only running normalize functions when needed
+		'tempIdChar' => ':' //if this char is at beginning of id, the id will be removed in compiling
 	];
 
 	public $path = [];
@@ -132,9 +133,11 @@ class path {
 			if(!is_numeric($key)){//in case of leftover numeric keys (like if self closing tag was given content)
 				//encode any double quotes from string (these can't be in attributes)...this is important for attributes which contain script
 				$value = preg_replace('/\"/', '&quot;', $value);
-				$return .= ' ' . $key . '="' . $value . '"';
+
+				//check for temporary ids & add to return
+				if(!($key == 'id' && substr($value,0,1) == $this->options['tempIdChar'])) $return .= ' ' . $key . '="' . $value . '"';
 			} else {
-				$test->error('self closing tag may have content');
+				$test->error('self closing tag might have content');
 				return;
 			}
 		}
