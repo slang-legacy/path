@@ -24,15 +24,18 @@ or
 (whichever you like)
 
 ##Features
- - id & class shorthands - rather than specifying an id or classes as attributes, they can be combined with the tag name in a format resembling a CSS seclector
+###Finished
+ - id & class shorthands - rather than specifying an id or classes as attributes, they can be combined with the tag name in a format resembling a CSS selector
 	
  - default div tag - if no tag is specified, a div tag will be assumed
 
-##Unfinished/Planned/Considered Features
+###Unfinished
  - server-side DOM manipulation and searching (still needs to be expanded)
+
+###Planned
  - id and class alias based minification - use normal aliases to refer to minified id or class names
 	
 
 
 
-PATH is not a new way to write HTML, it is a new way to write templates which is more closely intergrated with PHP. If you use PATH just for writing static HTML, and you are not using functions or shorthand to automate the writing of your pages, then you are wasting your time. 
+PATH is not a new way to write HTML, it is a new way to write templates which is more closely integrated with PHP. If you use PATH just for writing static HTML, and you are not using functions or shorthand to automate the writing of your pages, then you are wasting your time. 
