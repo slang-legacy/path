@@ -36,7 +36,7 @@ class path {
 		if(count($id) != 0 && empty($array['id'])) $array['id'] = $id[1];//this will ignore the shorthand if a id is defined normally
 		
 		//get classes
-		preg_match_all('/\.([^.\n\s]*)/', $array[0], $classes);
+		preg_match_all('/\.([^.#\n\s]*)/', $array[0], $classes);
 
 		if(empty($array['class'])) $array['class'] = '';//make sure class is defined... will unset later if not classes
 
