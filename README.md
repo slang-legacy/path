@@ -1,4 +1,5 @@
 #PATH (pre-alpha)
+##Description
 PATH is (P)HP (A)rrays (T)o (H)TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into regular HTML.
 
  - easier to manipulate and search through than regular text
@@ -21,5 +22,13 @@ or
 		'this is my content'
 	]
 (whichever you like)
+
+##Features
+ - id & class shorthands - rather than specifying an id or classes as attributes, they can be combined with the tag name in a format resembling a CSS seclector
+	
+ - default div tag - if no tag is specified, a div tag will be assumed
+	
+
+
 
 PATH is not a new way to write HTML, it is a new way to write templates which is more closely intergrated with PHP. If you use PATH just for writing static HTML, and you are not using functions or shorthand to automate the writing of your pages, then you are wasting your time. 
