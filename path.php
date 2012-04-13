@@ -178,13 +178,11 @@ class path {
 	}
 
 	protected function &getElementById($id, &$array){
-		//return $array[2][3];
 		//check id of element
 		if(array_key_exists('id', $array) && $array['id'] == $id) return $array;
 
 		//search for nested elements
 		foreach($array as &$value){
-			//return $value;
 			if(is_array($value)){//test element
 				$returnedValue = &$this->getElementById($id, $value);
 				if(is_array($returnedValue)) return $returnedValue;

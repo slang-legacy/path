@@ -57,7 +57,6 @@ $test->path =
 ];
 
 $value = &$test->find('#myId');
-$value[] = ['200'];
-//var_dump($test->path);
+$value[] = ['p','one last thing'];
 echo $test->compile();
 ?>
