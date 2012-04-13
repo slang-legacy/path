@@ -2,6 +2,8 @@
 error_reporting( E_ALL );
 ini_set('display_errors', 1);
 
+require 'firephp/fb.php';
+
 require 'path.php';
 $test = new path;
 
@@ -43,7 +45,7 @@ $test->path =
 		],
 		['#myId.myClass',5+4+3],
 		function(){
-			$array = ['i\'m','too','sexy','for','my','shirt'];
+			$array = ['i\'m','too','sexy'];
 			$newStuff;
 			foreach($array as $value){
 				$newStuff[] = ['p', $value];
@@ -53,7 +55,9 @@ $test->path =
 		['#myId.myClass',5+4+3]
 	]
 ];
-$value = &$test->find('#theht');
-$value = 200;
+
+$value = &$test->find('#myId');
+$value[] = ['200'];
+//var_dump($test->path);
 echo $test->compile();
 ?>

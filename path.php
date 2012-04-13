@@ -24,7 +24,7 @@ class path {
 
 	protected function getIdAndClasses(&$array){//currently only called by path normalize (doesn't need to be seperate function)
 		if(!is_string($array[0])){
-			error('tag name is not string or attribute is array');
+			$this->error('tag name is not string or attribute is array');
 			return;
 		}
 
@@ -54,6 +54,8 @@ class path {
 	}
 
 	public function normalize(&$array){
+		//this function removes shorthands and evaluates functions so the array can be easly manipulated by other functions
+
 		$this->getIdAndClasses($array);
 		//$tagName = $array[0];//add back at end of 
 		//unset($array[0]);
@@ -70,7 +72,7 @@ class path {
 				if(is_array($newValues)){
 					$array = array_merge($array, $newValues);
 				} else {
-					error('function did not return array');
+					$test->error('function did not return array');
 				}
 			} else {
 				//recursively call path to process nested tags
@@ -132,7 +134,7 @@ class path {
 				$value = preg_replace('/\"/', '&quot;', $value);
 				$return .= ' ' . $key . '="' . $value . '"';
 			} else {
-				error('self closing tag may have content');
+				$test->error('self closing tag may have content');
 				return;
 			}
 		}
@@ -152,7 +154,7 @@ class path {
 		return $return;
 	}
 
-	function error($errorText){
+	protected function error($errorText){
 		//TODO: add tag name n' other stuff to error logging
 		echo 'error: ' . $errorText;
 	}
@@ -164,14 +166,32 @@ class path {
 	public function &find($query){
 		if(!$this->options['manualNormalize']) $this->normalize($this->path);
 
-		if(substr($query,0,1) == '#') $found = &$this->getElementById($this->path);
+		if(substr($query,0,1) == '#') $found = &$this->getElementById(substr($query,1), $this->path);
 
-		//$GLOBALS['referanceHoldingVar'] =& $found;
+		if(is_array($found)){
+			return $found;
+		} else {
+			$this->error('couldn\'t find element');
+		}
+		
 		return $found;
 	}
 
-	protected function &getElementById(&$array){
-		return $array[2][3][1];
+	protected function &getElementById($id, &$array){
+		//return $array[2][3];
+		//check id of element
+		if(array_key_exists('id', $array) && $array['id'] == $id) return $array;
+
+		//search for nested elements
+		foreach($array as &$value){
+			//return $value;
+			if(is_array($value)){//test element
+				$returnedValue = &$this->getElementById($id, $value);
+				if(is_array($returnedValue)) return $returnedValue;
+			}
+		}
+		$returnedValue = false;//need to return variable ref
+		return $returnedValue;
 	}
 }
 ?>
