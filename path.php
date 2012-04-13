@@ -73,7 +73,7 @@ class path {
 				if(is_array($newValues)){
 					$array = array_merge($array, $newValues);
 				} else {
-					$test->error('function did not return array');
+					$this->error('function did not return array');
 				}
 			} else {
 				//recursively call path to process nested tags
@@ -137,7 +137,7 @@ class path {
 				//check for temporary ids & add to return
 				if(!($key == 'id' && substr($value,0,1) == $this->options['tempIdChar'])) $return .= ' ' . $key . '="' . $value . '"';
 			} else {
-				$test->error('self closing tag might have content');
+				$this->error('self closing tag might have content');
 				return;
 			}
 		}
