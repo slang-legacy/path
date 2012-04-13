@@ -27,6 +27,10 @@ or
  - id & class shorthands - rather than specifying an id or classes as attributes, they can be combined with the tag name in a format resembling a CSS seclector
 	
  - default div tag - if no tag is specified, a div tag will be assumed
+
+##Unfinished/Planned/Considered Features
+ - server-side DOM manipulation and searching (still needs to be expanded)
+ - id and class alias based minification - use normal aliases to refer to minified id or class names
 	
 
 
