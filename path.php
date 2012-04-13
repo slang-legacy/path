@@ -1,4 +1,4 @@
-<?php //PATH is (P)HP (A)rrays (T)o (H)TML
+<?php
 
 //TODO: add in import tag (gets & adds file in place of tag)
 //TODO: switch from php array syntax???
@@ -6,7 +6,7 @@
 //TODO: get selector library like sizzle for php
 class path {
 	public $options = [
-		'selfClosingTags' => ['img', 'br', 'input', 'meta', 'link'],
+		'selfClosingTags' => ['img','br','input','meta','link','circle','rect','path','polygon'],
 		'extraSpace' => true,//if you want path to add extra space between tags (for browser compatibility)
 		'indent' => true,
 		'showErrors' => true,
