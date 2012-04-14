@@ -11,7 +11,8 @@ class path {
 		'indent' => true,
 		'showErrors' => true,
 		'manualNormalize' => false, //increase performance by only running normalize functions when needed
-		'tempIdChar' => ':' //if this char is at beginning of id, the id will be removed in compiling
+		'tempIdChar' => ':', //if this char is at beginning of id, the id will be removed in compiling
+		'tempTagName' => 'temp' //the contents of this tag will replace the tag holding them during compile, attributes of temp tags will not exist past compile
 	];
 
 	public $path = [];
@@ -100,11 +101,13 @@ class path {
 		//make a way to manually specify a self closing tag
 		$isSelfClosing = in_array($tagName, $this->options['selfClosingTags']);
 
-		if($this->options['indent']){
-			$return = "\n" . $currentIndentation . '<' . $tagName;
-			$currentIndentation = $currentIndentation . '	';
-		} else {
-			$return = '<' . $tagName;
+		if($tagName != $this->options['tempTagName']){//none of this is needed for temp tags (performance increase & fix indentation)
+			if($this->options['indent']){
+				$return = "\n" . $currentIndentation . '<' . $tagName;
+				$currentIndentation = $currentIndentation . '	';
+			} else {
+				$return = '<' . $tagName;
+			}
 		}
 
 		if(!$isSelfClosing){//self closing tags can't have innerHTML
@@ -127,6 +130,9 @@ class path {
 				$key++;
 			}
 		}
+
+		//return only innerHTML for temp tags
+		if($tagName == $this->options['tempTagName']) return $innerHTML;
 
 		//process attributes - processed last because above code removes numeric keys from array (not attributes)
 		foreach($array as $key => $value){
