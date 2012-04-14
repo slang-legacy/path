@@ -41,7 +41,12 @@ $test->path =
 					$newStuff[] = ['p', $value];
 				}
 				return $newStuff;
-			}
+			},
+			['temp#myTempTagId',
+				'class'=>'myTempTagClass',
+				['p','this is a p tag in a temp tag'],
+				['a','this is an a tag in a temp tag']
+			]
 		],
 		['#myId.myClass',5+4+3],
 		function(){
@@ -56,7 +61,8 @@ $test->path =
 	]
 ];
 
-$value = &$test->find('#:myTemporaryId');
+$value =& $test->find('#:myTemporaryId');
 $value[] = ['p','one last thing'];
+
 echo $test->compile();
 ?>
