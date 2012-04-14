@@ -179,7 +179,7 @@ class path {
 	public function &find($query){
 		if(!$this->options['manualNormalize']) $this->normalize();
 
-		if(substr($query,0,1) == '#') $found = &$this->getElementById(substr($query,1), $this->path);
+		if(substr($query,0,1) == '#') $found =& $this->getElementById(substr($query,1), $this->path);
 
 		if(is_array($found)){
 			return $found;
@@ -197,7 +197,7 @@ class path {
 		//search for nested elements
 		foreach($array as &$value){
 			if(is_array($value)){//test element
-				$returnedValue = &$this->getElementById($id, $value);
+				$returnedValue =& $this->getElementById($id, $value);
 				if(is_array($returnedValue)) return $returnedValue;
 			}
 		}
