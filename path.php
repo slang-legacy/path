@@ -56,7 +56,7 @@ class path {
 	}
 
 	public function normalize(){
-		//NOTICE: this function will break any referances made by find()... use manual normalize to avoid this
+		//NOTICE: this function will break any referances made by previous uses of find()... use manual normalize to avoid this
 		$this->normalizeProcess($this->path);
 	}
 
