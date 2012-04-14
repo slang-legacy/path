@@ -18,7 +18,7 @@ class path {
 	public $path = [];
 
 	public function compile(){//wrapper function
-		if(!$this->options['manualNormalize']) $this->normalize($this->path);
+		if(!$this->options['manualNormalize']) $this->normalize();
 
 		$currentIndentation;
 		return $this->compileProcess($this->path);
@@ -55,7 +55,11 @@ class path {
 		$array[0] = empty($tagName[0]) ? 'div' : $tagName[0];//normalize and provide div default
 	}
 
-	public function normalize(&$array){
+	public function normalize(){
+		normalizeProcess($this->path);
+	}
+
+	protected function normalizeProcess(&$array){//separate because this needs to be called recursively
 		//this function removes shorthands and evaluates functions so the array can be easly manipulated by other functions
 
 		$this->getIdAndClasses($array);
@@ -78,7 +82,7 @@ class path {
 				}
 			} else {
 				//recursively call path to process nested tags
-				if(is_array($array[$key])) $this->normalize($array[$key]);
+				if(is_array($array[$key])) $this->normalizeProcess($array[$key]);
 
 				//will overwrite non-numberic keys (if declared twice), and append numberic ones - needed due to function returning values
 				is_numeric($key) ? $newArray[] = $array[$key] : $newArray[$key] = $array[$key];
@@ -173,7 +177,7 @@ class path {
 	}
 
 	public function &find($query){
-		if(!$this->options['manualNormalize']) $this->normalize($this->path);
+		if(!$this->options['manualNormalize']) $this->normalize();
 
 		if(substr($query,0,1) == '#') $found = &$this->getElementById(substr($query,1), $this->path);
 
