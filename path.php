@@ -56,7 +56,7 @@ class path {
 	}
 
 	public function normalize(){
-		normalizeProcess($this->path);
+		$this->normalizeProcess($this->path);
 	}
 
 	protected function normalizeProcess(&$array){//separate because this needs to be called recursively
