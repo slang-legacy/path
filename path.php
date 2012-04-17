@@ -108,10 +108,8 @@ class path {
 		unset($array[0]);
 
 		if(method_exists($extensionTags, $tagName)) {
-			fb('extensionTags');
-			call_user_func('$extensionTags->' . $tagName, $array);//call function for pre-processing tag
+			$extensionTags->$tagName($array);//call function for pre-processing tag
 		} else if(method_exists($replacementTags, $tagName)) {
-			
 			return $replacementTags->$tagName($array);//call function for processing tag
 		}
 
