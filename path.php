@@ -4,6 +4,8 @@
 //TODO: switch from php array syntax???
 //TODO: fix issue with spaces between tags
 //TODO: get selector library like sizzle for php
+
+
 class path {
 	public $options = [
 		'selfClosingTags' => ['img','br','input','meta','link','circle','rect','path','polygon'],
@@ -11,8 +13,7 @@ class path {
 		'indent' => true,
 		'showErrors' => true,
 		'manualNormalize' => false, //increase performance by only running normalize functions when needed
-		'tempIdChar' => ':', //if this char is at beginning of id, the id will be removed in compiling
-		'tempTagName' => 'temp' //the contents of this tag will replace the tag holding them during compile, attributes of temp tags will not exist past compile
+		'tempIdChar' => ':' //if this char is at beginning of id, the id will be removed in compiling
 	];
 
 	public $path = [];
@@ -100,20 +101,30 @@ class path {
 	protected function compileProcess($array){//separate because this needs to be called recursively
 		global $currentIndentation;
 
+		$extensionTags = new pathExtensionTags;
+		$replacementTags = new pathReplacementTags;
+
 		$tagName = $array[0];
 		unset($array[0]);
 
-		//make a way to manually specify a self closing tag
+		if(method_exists($extensionTags, $tagName)) {
+			fb('extensionTags');
+			call_user_func('$extensionTags->' . $tagName, $array);//call function for pre-processing tag
+		} else if(method_exists($replacementTags, $tagName)) {
+			
+			return $replacementTags->$tagName($array);//call function for processing tag
+		}
+
+		//make a way to manually specify a self closing tag (like for xml)
 		$isSelfClosing = in_array($tagName, $this->options['selfClosingTags']);
 
-		if($tagName != $this->options['tempTagName']){//none of this is needed for temp tags (performance increase & fix indentation)
-			if($this->options['indent']){
-				$return = "\n" . $currentIndentation . '<' . $tagName;
-				$currentIndentation = $currentIndentation . '	';
-			} else {
-				$return = '<' . $tagName;
-			}
+		if($this->options['indent']){
+			$return = "\n" . $currentIndentation . '<' . $tagName;
+			$currentIndentation = $currentIndentation . '	';
+		} else {
+			$return = '<' . $tagName;
 		}
+		
 
 		if(!$isSelfClosing){//self closing tags can't have innerHTML
 			$key = 1;
@@ -123,7 +134,7 @@ class path {
 				if(is_array($array[$key])){//recursively call path to process nested tags
 					if($this->options['indent']) $containsNestedTags = true;//used for end tag
 					if($this->options['extraSpace'] && !$this->options['indent']){//indent must be false, otherwise the extra space would be useless
-						$innerHTML .= ' ' . pathCompile($array[$key]) . ' ';
+						$innerHTML .= ' ' . $this->compileProcess($array[$key]) . ' ';
 					} else {
 						$innerHTML .= $this->compileProcess($array[$key]);
 					}
@@ -135,9 +146,6 @@ class path {
 				$key++;
 			}
 		}
-
-		//return only innerHTML for temp tags
-		if($tagName == $this->options['tempTagName']) return $innerHTML;
 
 		//process attributes - processed last because above code removes numeric keys from array (not attributes)
 		foreach($array as $key => $value){
@@ -205,5 +213,50 @@ class path {
 		$returnedValue = false;//need to return variable ref
 		return $returnedValue;
 	}
+}
+
+class pathExtensionTags extends path {
+	/*
+		if a function is defined in this class that matches a tag name, this function will be called after normalization to pre-process the tag before the main part of compiling is done
+		functions defined here are intended to perform operations like creating new inner content based off of attributes or setting defaults for tags
+		this function will be passed an array containing the tag (and all its content/attributes) to be pre-processed (with the tag name removed from the array)
+	*/
+
+}
+
+class pathReplacementTags extends path {
+	/*
+		if a function is defined in this class that matches a tag name (and there is no extension with that name in pathExtensionTags), this function will be called after normalization to process the tag (rather than using the normal compile process)
+		this function will be passed an array containing the tag (and all its content/attributes) to be processed (with the tag name removed from the array)
+	*/
+
+	function temp(&$array){
+		//the contents of this tag will replace the tag holding them during compile, attributes of temp tags will not exist past compile
+		$key = 1;
+		$innerHTML = '';
+
+		fb('replacementTags');
+
+		while(array_key_exists($key, $array)){
+			if(is_array($array[$key])){//recursively call path to process nested tags
+				if($this->options['extraSpace'] && !$this->options['indent']){//indent must be false, otherwise the extra space would be useless
+					$innerHTML .= ' ' . $this->compileProcess($array[$key]) . ' ';
+				} else {
+					$innerHTML .= $this->compileProcess($array[$key]);
+				}
+			} else {
+				$innerHTML .= $array[$key];
+			}
+
+			unset($array[$key]);
+			$key++;
+		}
+
+		fb('tthth');
+
+		//return only innerHTML for temp tags
+		return $innerHTML;
+	}
+
 }
 ?>
