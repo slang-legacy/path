@@ -233,8 +233,6 @@ class pathReplacementTags extends path {
 		$key = 1;
 		$innerHTML = '';
 
-		fb('replacementTags');
-
 		while(array_key_exists($key, $array)){
 			if(is_array($array[$key])){//recursively call path to process nested tags
 				if($this->options['extraSpace'] && !$this->options['indent']){//indent must be false, otherwise the extra space would be useless
@@ -249,8 +247,6 @@ class pathReplacementTags extends path {
 			unset($array[$key]);
 			$key++;
 		}
-
-		fb('tthth');
 
 		//return only innerHTML for temp tags
 		return $innerHTML;
