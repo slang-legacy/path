@@ -1,4 +1,11 @@
 #PATH (pre-alpha)
+##Update
+Right now, this project is dead... it never even made it past `pre-alpha`. I've moved on to working on a much nicer templating language called [semantic-jade](https://github.com/slang800/semantic-jade). Since semantic-jade accomplishes almost everything that I wanted PATH for (and more), I don't think I'll continue working on this project.
+
+Also, I don't really use PHP much anymore. It turns out that Python is a **much** better languge to work in. CoffeeScript is a joy to program with too.
+
+If anyone else wants to take it over: be my guest. I'll even transfer the repo to you if  you want.
+
 ##Description
 **PATH** is **P**HP **A**rrays **T**o **H**TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into regular HTML.
 
