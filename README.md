@@ -4,7 +4,7 @@ Right now, this project is dead... it never even made it past `pre-alpha`. I've 
 
 Also, I don't really use PHP much anymore. It turns out that Python is a **much** better languge to work in. CoffeeScript is a joy to program with too.
 
-If anyone else wants to take it over: be my guest. I'll even transfer the repo to you if  you want.
+If anyone else wants to take it over: be my guest. I'll even link this repo to your fork if you email me.
 
 ##Description
 **PATH** is **P**HP **A**rrays **T**o **H**TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into regular HTML.
