@@ -6,6 +6,8 @@ Also, I don't really use PHP much anymore. It turns out that Python is a **much*
 
 If anyone else wants to take it over: be my guest. I'll even link this repo to your fork if you email me.
 
+PS: [LM.js](https://github.com/rudenoise/LM.JS) is a very similar project... you might be interested in this.
+
 ##Description
 **PATH** is **P**HP **A**rrays **T**o **H**TML, which allows you to express HTML code as arrays written in a JSON-based shorthand, and converts these arrays into regular HTML.
 
