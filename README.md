@@ -1,6 +1,6 @@
-#PATH (pre-alpha)
-##Update
-Right now, this project is dead... it never even made it past `pre-alpha`. I've moved on to working on a much nicer templating language called [semantic-jade](https://github.com/slang800/semantic-jade). Since semantic-jade accomplishes almost everything that I wanted PATH for (and more), I don't think I'll continue working on this project.
+# PATH
+## Update
+This project is dead... it never even made it past `pre-alpha`. I've moved on to working on a much nicer templating language called [jade](https://github.com/pugjs/pug).
 
 Also, I don't really use PHP much anymore. It turns out that Python is a **much** better languge to work in. CoffeeScript is a joy to program with too.
 
